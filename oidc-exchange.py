@@ -118,13 +118,12 @@ def assert_successful_audience_call(resp: requests.Response, domain: str):
             )
 
 
-repository_url = get_normalized_input("repository-url")
-repository_domain = urlparse(repository_url).netloc
-token_exchange_url = f"https://{repository_domain}/_/oidc/github/mint-token"
+repository_domain = 'http://localhost:8080'
+token_exchange_url = f"{repository_domain}/_/oidc/github/mint-token"
 
 # Indices are expected to support `https://{domain}/_/oidc/audience`,
 # which tells OIDC exchange clients which audience to use.
-audience_url = f"https://{repository_domain}/_/oidc/audience"
+audience_url = f"{repository_domain}/_/oidc/audience"
 audience_resp = requests.get(audience_url)
 assert_successful_audience_call(audience_resp, repository_domain)
 

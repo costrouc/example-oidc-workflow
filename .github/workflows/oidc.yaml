@@ -30,7 +30,12 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install requests id
+          pip install requests id pydantic fastapi pyjwt
+
+      - name: Start web server
+        run: |
+          python app.py &
+          sleep 5
 
       - name: Run OIDC
         run: |
