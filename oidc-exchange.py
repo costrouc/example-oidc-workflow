@@ -118,7 +118,7 @@ def assert_successful_audience_call(resp: requests.Response, domain: str):
             )
 
 
-repository_domain = 'http://localhost:8080'
+repository_domain = 'http://localhost:8000'
 token_exchange_url = f"{repository_domain}/_/oidc/github/mint-token"
 
 # Indices are expected to support `https://{domain}/_/oidc/audience`,
