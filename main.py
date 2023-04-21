@@ -7,6 +7,10 @@ class AudienceResponse(pydantic.BaseModel):
     audience: str
 
 
+class TokenRequest(pydantic.BaseModel):
+    token: str
+
+
 class TokenResponse(pydantic.BaseModel):
     token: str
 
@@ -20,7 +24,7 @@ async def get_audience() -> AudienceResponse:
 
 
 @app.post("/_/oidc/github/token")
-async def create_token(token: str):
-    payload = jwt.decode(token)
+async def create_token(token: TokenRequest):
+    payload = jwt.decode(token.token)
     print(payload)
     return TokenResponse(token="asdf")
