@@ -30,13 +30,18 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install requests id pydantic fastapi pyjwt uvicorn
+          pip install requests id pydantic fastapi pyjwt uvicorn cryptography
 
       - name: Start web server
         run: |
-          uvicorn main:app &
-          sleep 5
+          uvicorn main:app > stdout.txt 2>&1 &
+          sleep 2
 
       - name: Run OIDC
         run: |
           python oidc-exchange.py
+
+      - name: Web Server Output
+        if: ${{ always() }}
+        run: |
+          cat stdout.txt

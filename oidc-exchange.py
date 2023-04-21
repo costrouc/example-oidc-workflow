@@ -1,6 +1,7 @@
 # https://raw.githubusercontent.com/pypa/gh-action-pypi-publish/unstable/v1/oidc-exchange.py
 import os
 import sys
+import time
 from http import HTTPStatus
 from pathlib import Path
 from typing import NoReturn
@@ -136,6 +137,8 @@ try:
 except id.IdentityError as identity_error:
     die(_TOKEN_RETRIEVAL_FAILED_MESSAGE.format(identity_error=identity_error))
 
+time.sleep(1)
+
 # Now we can do the actual token exchange.
 mint_token_resp = requests.post(
     token_exchange_url,
@@ -167,7 +170,7 @@ oidc_token = mint_token_payload.get("token")
 if oidc_token is None:
     die(_SERVER_TOKEN_RESPONSE_MALFORMED_MESSAGE)
 
-# Mask the newly minted oidc token, so that we don't accidentally leak it in logs.
+# # Mask the newly minted oidc token, so that we don't accidentally leak it in logs.
 print(f"::add-mask::{oidc_token}", file=sys.stderr)
 
 # This final print will be captured by the subshell in `twine-upload.sh`.
