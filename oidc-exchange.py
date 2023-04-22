@@ -137,6 +137,7 @@ try:
 except id.IdentityError as identity_error:
     die(_TOKEN_RETRIEVAL_FAILED_MESSAGE.format(identity_error=identity_error))
 
+# sleep 1s so that token iat is valid
 time.sleep(1)
 
 # Now we can do the actual token exchange.

@@ -47,7 +47,11 @@ async def create_token(token: TokenRequest):
     public_key = TRUSTED_PUBLIC_KEYS[header['kid']]
     payload = jwt.decode(token.token, public_key, audience="example-oidc-workflow", algorithms=['RS256'])
     print(payload)
-    print(datetime.datetime.fromtimestamp(payload['iat']))
-    print(datetime.datetime.utcnow())
-    print(datetime.datetime.now())
+
+    if payload['repository'] != 'costrouc/example-oidc-workflow':
+        raise fastapi.HTTPException('Invalid github repository', status_code=403)
+
+    if payload['ref'] != 'refs/heads/main':
+        raise fastapi.HTTPException('Invalid branch must be main', status_code=403)
+
     return TokenResponse(token="asdf")
