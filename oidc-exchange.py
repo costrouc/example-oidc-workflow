@@ -1,4 +1,6 @@
+# This file was taken from gh-action-pypi-publish and only slightly modified
 # https://raw.githubusercontent.com/pypa/gh-action-pypi-publish/unstable/v1/oidc-exchange.py
+
 import os
 import sys
 import time
