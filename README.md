@@ -52,7 +52,9 @@ the token.
 
 Done!
 
+# License
 
+MIT
 
 
 
