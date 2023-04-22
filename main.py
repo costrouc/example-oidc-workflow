@@ -2,6 +2,7 @@ import json
 import datetime
 
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import JSONResponse
 import pydantic
 import requests
 import jwt
@@ -33,6 +34,17 @@ TRUSTED_PUBLIC_KEYS = get_public_keys()
 
 
 app = FastAPI()
+
+
+@app.exception_handler(HTTPException)
+async def http_exception_handler(request, exc):
+    return JSONResponse(
+        {
+            "status": "error",
+            "errors": [dict(code=403, description=exc.detail)],
+        },
+        status_code=exc.status_code,
+    )
 
 
 @app.get("/_/oidc/audience")
