@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   test-python-docker:
-    name: 'Test python-docker'
+    name: 'Test OIDC Workflow'
     runs-on: ubuntu-latest
 
 
