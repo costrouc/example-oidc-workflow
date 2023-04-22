@@ -1,5 +1,11 @@
 # Implementation of an OIDC github client
 
+Here we implement OIDC authentication for github-actions entirely
+within the github-action.
+
+ - client `oidc-exchange.py` (github-action)
+ - server `main.py` ("provider" for example vault, cloud providers, pypi)
+
 ## High Level
 
 The workflow goes as follows. Call an audience route on your web
@@ -39,8 +45,12 @@ POST https://{repository_domain}/_/oidc/github/token
 Before returning `token` as a response the web server should validate
 the token.
 
-1. verify that the token is authentic 
+1. download the public keys from github for validating jwts
+2. verify that the jwt token is authentic (check iss, sub, aud, exp, nbf, jti, etc.)
+3. next validate additional claims from the jwt e.g. repository, branch, workflow, etc.
+4. return a properly scoped token
 
+Done!
 
 
 
