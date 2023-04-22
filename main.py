@@ -1,7 +1,8 @@
 import json
 import datetime
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
+from fastapi.responses import JSONResponse
 import pydantic
 import requests
 import jwt
@@ -35,6 +36,17 @@ TRUSTED_PUBLIC_KEYS = get_public_keys()
 app = FastAPI()
 
 
+@app.exception_handler(HTTPException)
+async def http_exception_handler(request, exc):
+    return JSONResponse(
+        {
+            "status": "error",
+            "errors": [dict(code=403, description=exc.detail)],
+        },
+        status_code=exc.status_code,
+    )
+
+
 @app.get("/_/oidc/audience")
 async def get_audience() -> AudienceResponse:
     return AudienceResponse(audience="example-oidc-workflow")
@@ -49,9 +61,9 @@ async def create_token(token: TokenRequest):
     print(payload)
 
     if payload['repository'] != 'costrouc/example-oidc-workflow':
-        raise fastapi.HTTPException('Invalid github repository', status_code=403)
+        raise HTTPException(detail='Invalid github repository', status_code=403)
 
     if payload['ref'] != 'refs/heads/main':
-        raise fastapi.HTTPException('Invalid branch must be main', status_code=403)
+        raise HTTPException(detail='Invalid branch must be main', status_code=403)
 
     return TokenResponse(token="asdf")
