@@ -1,7 +1,7 @@
 import json
 import datetime
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 import pydantic
 import requests
 import jwt
@@ -49,9 +49,9 @@ async def create_token(token: TokenRequest):
     print(payload)
 
     if payload['repository'] != 'costrouc/example-oidc-workflow':
-        raise fastapi.HTTPException('Invalid github repository', status_code=403)
+        raise HTTPException(detail='Invalid github repository', status_code=403)
 
     if payload['ref'] != 'refs/heads/main':
-        raise fastapi.HTTPException('Invalid branch must be main', status_code=403)
+        raise HTTPException(detail='Invalid branch must be main', status_code=403)
 
     return TokenResponse(token="asdf")
